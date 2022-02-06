@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.DriveSpark;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -21,16 +23,20 @@ import frc.robot.subsystems.Drivetrain;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  //private final Drivetrain drivetrain = new Drivetrain();
-  //private final Joystick joystick1 = new Joystick(OIConstants.kJoystick1);
-  //private final Joystick joystick2 = new Joystick(OIConstants.kJoystick2);
+  private final Drivetrain drivetrain = new Drivetrain();
+  private final Joystick joystick1 = new Joystick(OIConstants.kJoystick1);
+  private final Joystick joystick2 = new Joystick(OIConstants.kJoystick2);
   
   //Autonomous Command Calls
-  // private final Command m_finalAuto =
-  //   new Drive();
+  private final Command m_PIDRun = new DriveSpark(1,drivetrain);
 
 
-  // private final Command m_moveForwardAuto =
+  private final Command m_Run4Fun = 
+  new StartEndCommand(
+    ()-> drivetrain.(),
+    ()-> drivetrain.setSetPoint(100),drivetrain
+  );
+
   //   new DriveForward();
 
   // SendableChooser<Command> m_chooser = new SendableChooser<>();
