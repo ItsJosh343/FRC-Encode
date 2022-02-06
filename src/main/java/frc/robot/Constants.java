@@ -22,6 +22,18 @@ public final class Constants {
         public static final int kSpinner = 0;
     }
 
+    public static final class PID{
+        // public static final double kTolerance = .001;
+        // public static final double kPDrive = 5e-20;
+        // public static final double kIDrive = 1e-6 + 1e-3;
+        // public static final double kIZoneDrive = 0;
+        // public static final double kDDrive = 0;
+        // public static final double kFFDrive = 0.000156;
+        // public static final double kForwardRR = 0;
+        // public static final double kStrafeRR = 0;
+        // public static final double kIsMoreStrafe = .5;
+    }
+
     public static final class OIConstants{
         public static final int kJoystick1 = 0;
         public static final int kJoystick2 = 1;

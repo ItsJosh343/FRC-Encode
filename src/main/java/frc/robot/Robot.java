@@ -73,8 +73,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    
-    test.init();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -90,9 +88,6 @@ public class Robot extends TimedRobot {
     // Drivetrain.init()
     // boolean mode = SmartDashboard.getBoolean("Mode", false);
     double setPoint = SmartDashboard.getNumber("DB/Slider 3", 0);
-       
-    
-    test.setSetPoint(setPoint);
   }
 
   @Override

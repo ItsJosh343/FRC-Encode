@@ -1,0 +1,7 @@
+-----------------NOTES TO SELF/OTHERS WORKING ON THE CODE--------------------
+
+I need to add things to Smartdashboard:
+- "P Value" double
+- "I Value" double
+- "D Value" double
+- "Position Stop Tolerance" double
