@@ -10,29 +10,46 @@ import frc.robot.subsystems.Drivetrain;
 
 public class DriveSpark extends CommandBase {
   /** Creates a new DriveSpark. */
-  public DriveSpark() {
+
+  private double leftMasterSetPoint;
+  private double setTarget;
+
+  private final Drivetrain drivetrain;
+
+  public DriveSpark(double target,Drivetrain subDrivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     // addRequirements();
+    setTarget = target;
+    drivetrain = subDrivetrain;
+    addRequirements(subDrivetrain);
   
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    leftMasterSetPoint = drivetrain.getLeftMasterPosition() + setTarget;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    drivetrain.setSetPoint(leftMasterSetPoint);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // while(this.timeSinceInitialized())
+    // {
+    //   double test = this.timeSinceInitialized()
+    // }
     return false;
   }
 }
