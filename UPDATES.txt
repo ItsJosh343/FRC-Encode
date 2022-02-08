@@ -5,3 +5,5 @@ I need to add things to Smartdashboard:
 - "I Value" double
 - "D Value" double
 - "Position Stop Tolerance" double
+
+I need to find out the CAN ID's of the Lift SparkMax and address them in constants

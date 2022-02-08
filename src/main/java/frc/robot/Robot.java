@@ -85,9 +85,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    // Drivetrain.init()
-    // boolean mode = SmartDashboard.getBoolean("Mode", false);
-    double setPoint = SmartDashboard.getNumber("DB/Slider 3", 0);
+
+    
   }
 
   @Override

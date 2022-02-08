@@ -39,6 +39,7 @@ public final class Constants {
     public static final class Lift{
         public static final float kUpwardLimit = 10;
         public static final float kDownwardLimit = 0;
+        public static final double kLiftSpeed = .01;
     }
 
     public static final class OIConstants{

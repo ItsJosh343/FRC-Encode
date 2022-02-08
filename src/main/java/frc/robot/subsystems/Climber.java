@@ -5,8 +5,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,29 +16,25 @@ public class Climber extends SubsystemBase{
     
     private CANSparkMax liftMaster;
     private CANSparkMax liftSlave;
-
-    private RelativeEncoder LMEncoder;
-
-    private SparkMaxPIDController liftMasterCanController;
     
     public Climber() {
+        //assign CANSparkMax to appropriate values
         liftMaster = new CANSparkMax(RobotMap.kLiftMaster, MotorType.kBrushless);
         liftSlave = new CANSparkMax(RobotMap.kLiftSlave, MotorType.kBrushless);
+        liftMaster.setInverted(false);
         liftSlave.follow(liftMaster,true);
-        
-        LMEncoder = liftMaster.getEncoder();
 
+        //Limit the motion of the lift to only turn within a certain range.
         liftMaster.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward,true);
         liftMaster.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward,Lift.kUpwardLimit);
 
+        liftMaster.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse,true);
+        liftMaster.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse,Lift.kDownwardLimit);
+
     }
 
-    public double getLiftMasterPosition() {
-        return LMEncoder.getPosition();
-    }
-
-    public void PIDSetPoint() {
-        
+    public void liftDrive(double speed) {
+        liftMaster.set(speed);
     }
 
 }

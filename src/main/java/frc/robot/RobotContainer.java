@@ -12,8 +12,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.Lift;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.DriveSpark;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -26,13 +29,16 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   private final Drivetrain drivetrain = new Drivetrain();
+  private final Climber climber = new Climber();
   private final Joystick joystick1 = new Joystick(OIConstants.kJoystick1);
   private final Joystick joystick2 = new Joystick(OIConstants.kJoystick2);
   
   //Autonomous Command Calls
   private final Command m_PIDRun = new DriveSpark(1,drivetrain,SmartDashboard.getNumber("Position Stop Tolerance",0.001));
   
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  //chooser that will determine which command is deployed in each mode
+  SendableChooser<Command> autoChooser = new SendableChooser<>();
+  SendableChooser<Command> testChooser = new SendableChooser<>();
 
   //StartEndCommand to run PID to a partical location given PID parameters from SmartDashboard
   private final Command m_Run4Fun = 
@@ -41,14 +47,20 @@ public class RobotContainer {
     ()-> drivetrain.PIDSetPoint(SmartDashboard.getNumber("Delta Position",0)),drivetrain
   );
 
+  
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    //drivetrain.setDefaultCommand(new RunCommand(
-      //() -> drivetrain.drive.tankDrive(-joystick1.getY(), joystick2.getY()), drivetrain));
-    //add options to the Autonomous Chooser
-    m_chooser.setDefaultOption("Move Forward Auto [Using Commands]",m_PIDRun);
-    m_chooser.addOption("Move Forward Auto [Using StartEndCommand]",m_Run4Fun);
 
+    //add options to the Autonomous Chooser
+    autoChooser.setDefaultOption("Move Forward Auto [Using Commands]",m_PIDRun);
+    autoChooser.addOption("Move Forward Auto [Using StartEndCommand]",m_Run4Fun);
+
+    //set climber to control Lift with Joystick1's Y
+    climber.setDefaultCommand(
+      new RunCommand(
+        ()-> climber.liftDrive(Lift.kLiftSpeed * joystick1.getY()), climber)
+    );
     
     // Configure the button bindings
     configureButtonBindings();
@@ -61,13 +73,14 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
+   
   }
 
   public Command getAutonomousCommand() {
     // Put the chooser on the dashboard
-    SmartDashboard.putData(m_chooser);
+    SmartDashboard.putData(autoChooser);
 
-    return m_chooser.getSelected();
+    return autoChooser.getSelected();
   }
+
 }
