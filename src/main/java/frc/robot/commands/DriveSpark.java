@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.PID;
 import frc.robot.subsystems.Drivetrain;
@@ -38,6 +39,7 @@ public class DriveSpark extends CommandBase {
   @Override
   public void initialize() {
     leftMasterSetPoint = drivetrain.getLeftMasterPosition() + setTarget;
+    drivetrain.PIDUpdate(SmartDashboard.getNumber("PValue",0.6),SmartDashboard.getNumber("IValue",0.6),SmartDashboard.getNumber("DValue",0.6));
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -15,13 +15,13 @@ package frc.robot;
 public final class Constants {
 
     public static final class RobotMap{
-        public static final int kLeftMaster = 3;
+        public static final int kLeftMaster = 3; //can 3
         public static final int kLeftSlave = 1;
         public static final int kRightMaster = 2;
         public static final int kRightSlave = 4;
         public static final int kSpinner = 0;
-        public static final int kLiftMaster = 5;
-        public static final int kLiftSlave = 6;
+        public static final int kLiftMaster = 1;
+        public static final int kLiftSlave = 2; //can 1
     }
 
     public static final class PID{
@@ -37,9 +37,9 @@ public final class Constants {
     }
 
     public static final class Lift{
-        public static final float kUpwardLimit = 10;
+        public static final float kUpwardLimit = 100;
         public static final float kDownwardLimit = 0;
-        public static final double kLiftSpeed = .01;
+        public static final double kLiftSpeed = .5;
     }
 
     public static final class OIConstants{

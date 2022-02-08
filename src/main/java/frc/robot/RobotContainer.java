@@ -33,24 +33,30 @@ public class RobotContainer {
   private final Joystick joystick1 = new Joystick(OIConstants.kJoystick1);
   private final Joystick joystick2 = new Joystick(OIConstants.kJoystick2);
   
+  
   //Autonomous Command Calls
-  private final Command m_PIDRun = new DriveSpark(1,drivetrain,SmartDashboard.getNumber("Position Stop Tolerance",0.001));
+  private final Command m_PIDRun = new DriveSpark(1,drivetrain,SmartDashboard.getNumber("PositionStopTolerance",0.001));
   
   //chooser that will determine which command is deployed in each mode
   SendableChooser<Command> autoChooser = new SendableChooser<>();
   SendableChooser<Command> testChooser = new SendableChooser<>();
-
+  
   //StartEndCommand to run PID to a partical location given PID parameters from SmartDashboard
   private final Command m_Run4Fun = 
   new StartEndCommand(
-    ()-> drivetrain.PIDUpdate(SmartDashboard.getNumber("P Value",5e-20),SmartDashboard.getNumber("I Value",(1e-6) + (1e-3)),SmartDashboard.getNumber("D Value",0)),
-    ()-> drivetrain.PIDSetPoint(SmartDashboard.getNumber("Delta Position",0)),drivetrain
+    ()-> drivetrain.PIDUpdate(SmartDashboard.getNumber("PValue",.05),SmartDashboard.getNumber("IValue",0.05),SmartDashboard.getNumber("DValue",0.05)),
+    ()-> drivetrain.PIDSetPointAbsolute(SmartDashboard.getNumber("DeltaPosition",0.05)),drivetrain
   );
 
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    SmartDashboard.putNumber("PValue",0.0);
+    SmartDashboard.putNumber("IValue",0.0);
+    SmartDashboard.putNumber("DValue",0.0);
+    SmartDashboard.putNumber("DeltaPosition",0.0);
+    SmartDashboard.putNumber("PositionStopTolerance",0.0);
 
     //add options to the Autonomous Chooser
     autoChooser.setDefaultOption("Move Forward Auto [Using Commands]",m_PIDRun);

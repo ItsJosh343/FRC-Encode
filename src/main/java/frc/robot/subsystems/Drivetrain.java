@@ -4,7 +4,10 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.*;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+// import com.revrobotics.*;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 // import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -32,25 +35,34 @@ public class Drivetrain extends SubsystemBase {
         kIDrive = 1e-6 + 1e-3;
         kIZoneDrive = 0;
         kDDrive = 0;
-        kFFDrive = 0.000156;
+        kFFDrive = 0;
         kForwardRR = 0;
         kStrafeRR = 0;
         kIsMoreStrafe = .5;
 
+        System.out.println("HEREREHREHRSRHHFS");
+        System.out.println(kPDrive);
+        System.out.println(kIDrive);
+        System.out.println(kDDrive);
+
         //assign PID Values for PID Controllers
-        leftMasterCanController.setP(kPDrive);
-        leftMasterCanController.setI(kIDrive);
+        // leftMasterCanController.setP(kPDrive);
+        // leftMasterCanController.setI(kIDrive);
         leftMasterCanController.setIZone(kIZoneDrive);
-        leftMasterCanController.setD(kDDrive);
+        // leftMasterCanController.setD(kDDrive);
         leftMasterCanController.setFF(kFFDrive);
         leftMasterCanController.setOutputRange(-1, 1);
-        leftMasterCanController.setSmartMotionMaxVelocity(10000, 0);
-        leftMasterCanController.setSmartMotionMaxAccel(2000, 0);
+        leftMasterCanController.setSmartMotionMaxVelocity(.01, 0);
+        leftMasterCanController.setSmartMotionMaxAccel(.2, 0);
 
     }
 
     // Sets new PID Values according to inputs
     public void PIDUpdate(double P, double I, double D) {
+        System.out.println("TEST2");
+        System.out.println(P);
+        System.out.println(I);
+        System.out.println(D);
 
         leftMasterCanController.setP(P);
         leftMasterCanController.setI(I);
