@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -22,8 +21,6 @@ public class SparkmaxPID extends SubsystemBase {
     private CANSparkMax leftMaster;
     private RelativeEncoder LMEncoder;
     private SparkMaxPIDController leftMasterCanController;
-    
-    private double kPDrive, kIDrive, kIZoneDrive, kDDrive, kFFDrive, kForwardRR, kStrafeRR, kIsMoreStrafe;
 
     // public DifferentialDrive drive;
     public SparkmaxPID() {
@@ -38,8 +35,6 @@ public class SparkmaxPID extends SubsystemBase {
         leftMaster.restoreFactoryDefaults();
         leftMaster.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward,false);
         leftMaster.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse,false);
-        leftMasterCanController.setIZone(kIZoneDrive);
-        leftMasterCanController.setFF(kFFDrive);
         leftMasterCanController.setOutputRange(-1, 1);
         leftMasterCanController.setSmartMotionMaxVelocity(1000, 0);
         leftMasterCanController.setSmartMotionMaxAccel(2000, 0);
@@ -75,59 +70,23 @@ public class SparkmaxPID extends SubsystemBase {
         SmartDashboard.putNumber("DReal:",leftMasterCanController.getD());
         SmartDashboard.putNumber("Current:",leftMaster.getOutputCurrent());
         SmartDashboard.putNumber("CurrentPos:",LMEncoder.getPosition());
-        // SmartDashboard.putNumber(leftMasterCanController.get)
     }
 
-    // Enables motor to dirve to PID absolute encoder position of target
+    // Drive motor to PID a given encoder position [tagetLeft]
     public void PIDSetPointAbsolute(double targetLeft) {
 
         leftMasterCanController.setReference(targetLeft, CANSparkMax.ControlType.kSmartMotion);
     }
 
+    //manual control of SparkMax speed
     public void setSpeed(double speed)
     {
         leftMaster.set(speed);
     }
 
+    //stop motion of the Sparkmax
     public void stop()
     {
         leftMaster.set(0);
     }
 }
-
-
-//Deprecated (?) code:
-
-
-// THE FOLLOWING NEEDS TO BE DECLARED IN CONSTANTS (PID DRIVE RELATED)
-// CANSparkMax(device number, type of motor (NEO brushless in this case))
-/*
- * leftMaster = new CANSparkMax(RobotMap.kLeftMaster, MotorType.kBrushless);
- * //CAN 3
- * leftSlave = new CANSparkMax(RobotMap.kLeftSlave, MotorType.kBrushless); //CAN
- * 1
- * rightMaster = new CANSparkMax(RobotMap.kRightMaster, MotorType.kBrushless);
- * //CAN 2
- * rightSlave = new CANSparkMax(RobotMap.kRightSlave, MotorType.kBrushless);
- * //CAN 4
- * drive = new DifferentialDrive(leftMaster, rightMaster);
- * 
- * //Set Motor Polarities (is it going to be inverted?)
- * leftMaster.setInverted(false);
- * leftSlave.setInverted(false);
- * rightMaster.setInverted(false);
- * rightSlave.setInverted(false);
- * 
- * //Slave motors to follow Master motors
- * leftSlave.follow(leftMaster);
- * rightSlave.follow(rightMaster);
- * 
- * /* The RestoreFactoryDefaults method can be used to reset the configuration
- * parameters
- * in the SPARK MAX to their factory default state. If no argument is passed,
- * these
- * parameters will not persist between power cycles
- *//*
-    * leftMaster.restoreFactoryDefaults();
-    * rightMaster.restoreFactoryDefaults();
-    */
