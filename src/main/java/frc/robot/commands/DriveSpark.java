@@ -39,14 +39,14 @@ public class DriveSpark extends CommandBase {
   @Override
   public void initialize() {
     leftMasterSetPoint = drivetrain.getLeftMasterPosition() + setTarget;
-    drivetrain.PIDUpdate(SmartDashboard.getNumber("PValue",0.6),SmartDashboard.getNumber("IValue",0.6),SmartDashboard.getNumber("DValue",0.6));
+    drivetrain.PIDUpdate(SmartDashboard.getNumber("PValue",0),SmartDashboard.getNumber("IValue",0),SmartDashboard.getNumber("DValue",0));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     //enable motors to run to PID position
-    drivetrain.PIDSetPointAbsolute(leftMasterSetPoint);
+    drivetrain.PIDSetPointAbsolute(setTarget);
   }
 
   // Called once the command ends or is interrupted.

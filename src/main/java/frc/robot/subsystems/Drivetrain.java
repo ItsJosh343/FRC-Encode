@@ -4,12 +4,14 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 // import com.revrobotics.*;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RobotMap;
@@ -31,29 +33,15 @@ public class Drivetrain extends SubsystemBase {
         leftMasterCanController = leftMaster.getPIDController();
         
         //Define PID Values
-        kPDrive = 5e-20;
-        kIDrive = 1e-6 + 1e-3;
-        kIZoneDrive = 0;
-        kDDrive = 0;
-        kFFDrive = 0;
-        kForwardRR = 0;
-        kStrafeRR = 0;
-        kIsMoreStrafe = .5;
-
-        System.out.println("HEREREHREHRSRHHFS");
-        System.out.println(kPDrive);
-        System.out.println(kIDrive);
-        System.out.println(kDDrive);
 
         //assign PID Values for PID Controllers
-        // leftMasterCanController.setP(kPDrive);
-        // leftMasterCanController.setI(kIDrive);
+        leftMaster.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward,false);
+        leftMaster.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse,false);
         leftMasterCanController.setIZone(kIZoneDrive);
-        // leftMasterCanController.setD(kDDrive);
         leftMasterCanController.setFF(kFFDrive);
         leftMasterCanController.setOutputRange(-1, 1);
-        leftMasterCanController.setSmartMotionMaxVelocity(.01, 0);
-        leftMasterCanController.setSmartMotionMaxAccel(.2, 0);
+        leftMasterCanController.setSmartMotionMaxVelocity(1000, 0);
+        leftMasterCanController.setSmartMotionMaxAccel(2000, 0);
 
     }
 
@@ -76,15 +64,33 @@ public class Drivetrain extends SubsystemBase {
     }
 
     // Enables motor to drive to PID Target location relative to where it is now
-    public void PIDSetPoint(double targetLeft){
-
-        leftMasterCanController.setReference(LMEncoder.getPosition() + targetLeft, CANSparkMax.ControlType.kSmartMotion);
+    public void PIDSetPoint(double targetLeft,double P, double I, double D){
+        leftMasterCanController.setP(P);
+        leftMasterCanController.setI(I);
+        leftMasterCanController.setD(D);
+        leftMasterCanController.setReference(targetLeft, CANSparkMax.ControlType.kSmartMotion);
+        SmartDashboard.putNumber("PReal:",leftMasterCanController.getP());
+        SmartDashboard.putNumber("IReal:",leftMasterCanController.getI());
+        SmartDashboard.putNumber("DReal:",leftMasterCanController.getD());
+        SmartDashboard.putNumber("Current:",leftMaster.getOutputCurrent());
+        SmartDashboard.putNumber("CurrentPos:",LMEncoder.getPosition());
+        // SmartDashboard.putNumber(leftMasterCanController.get)
     }
 
     // Enables motor to dirve to PID absolute encoder position of target
     public void PIDSetPointAbsolute(double targetLeft) {
 
         leftMasterCanController.setReference(targetLeft, CANSparkMax.ControlType.kSmartMotion);
+    }
+
+    public void setSpeed(double speed)
+    {
+        leftMaster.set(speed);
+    }
+
+    public void stop()
+    {
+        leftMaster.set(0);
     }
 }
 
