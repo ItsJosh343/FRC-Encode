@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.simulation.JoystickSim;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,7 +36,7 @@ public class RobotContainer {
   
   
   //Autonomous Command Calls
-  // private final Command m_PIDRun = new DriveSpark(SmartDashboard.getNumber("targetPosition",0),sparkmaxpid,SmartDashboard.getNumber("PositionStopTolerance",0.001));
+  // private final Command m_PIDRun = new DriveSpark(SmartDashboard.getNumber("Target Position",0),sparkmaxpid,SmartDashboard.getNumber("Position Stop Tolerance",0.001));
   
   //chooser that will determine which command is deployed in each mode
   SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -43,18 +44,20 @@ public class RobotContainer {
   //StartEndCommand to run PID to a partical location given PID parameters from SmartDashboard
   // private final Command m_Run4Fun = 
   // new StartEndCommand(
-  //   ()-> drivetrain.PIDUpdate(SmartDashboard.getNumber("PValue",.05),SmartDashboard.getNumber("IValue",0.05),SmartDashboard.getNumber("DValue",0.05)),
+  //   ()-> drivetrain.PIDUpdate(SmartDashboard.getNumber("P Value",.05),SmartDashboard.getNumber("I Value",0.05),SmartDashboard.getNumber("D Value",0.05)),
   //   ()-> drivetrain.PIDSetPointAbsolute(SmartDashboard.getNumber("Position",0.05)),drivetrain
   // );
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    SmartDashboard.putNumber("PValue",0.0);
-    SmartDashboard.putNumber("IValue",0.0);
-    SmartDashboard.putNumber("DValue",0.0);
-    SmartDashboard.putNumber("targetPosition",100.0);
-    SmartDashboard.putNumber("PositionStopTolerance",0.0);
+    SmartDashboard.putNumber("P Value",0.0);
+    SmartDashboard.putNumber("I Value",0.0);
+    SmartDashboard.putNumber("D Value",0.0);
+    SmartDashboard.putNumber("Target Position",100.0);
+    SmartDashboard.putNumber("Target Velocity",10.0);
+    SmartDashboard.putNumber("Position Stop Tolerance",0.0);
+    SmartDashboard.putBoolean("Limits Enabled",true);
 
     //add options to the Autonomous Chooser
     // autoChooser.setDefaultOption("Move Forward Auto [Using Commands]", m_PIDRun);
@@ -81,15 +84,15 @@ public class RobotContainer {
     //Run PID while button 2 on joystick is being held
     new JoystickButton(joystick1,2).whileHeld(
       new StartEndCommand(
-        ()-> sparkmaxpid.PIDSetPoint(SmartDashboard.getNumber("targetPosition",0),SmartDashboard.getNumber("PValue",0),SmartDashboard.getNumber("IValue",0),SmartDashboard.getNumber("DValue",0)), 
+        ()-> sparkmaxpid.PIDSetPoint(SmartDashboard.getNumber("Target Position",0),SmartDashboard.getNumber("P Value",0),SmartDashboard.getNumber("I Value",0),SmartDashboard.getNumber("D Value",0)), 
         ()-> sparkmaxpid.stop(), sparkmaxpid
       )
     );
 
-    //Run Climb test code while button 1 on joystick is being held
+    //Run Climb PID test code while button 1 on joystick is being held
     new JoystickButton(joystick1, 1).whileHeld(
       new StartEndCommand(
-        ()-> climber.liftDrive(Lift.kLiftSpeed * joystick1.getY()),
+        ()-> climber.runPID(SmartDashboard.getNumber("Target Velocity", 10.0) * joystick1.getY(),SmartDashboard.getNumber("P Value",0),SmartDashboard.getNumber("I Value",0),SmartDashboard.getNumber("D Value",0),SmartDashboard.getBoolean("Limits Enabled", true)),
         ()-> climber.stop(), climber
       )
     );
