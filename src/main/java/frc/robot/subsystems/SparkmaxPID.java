@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RobotMap;
 
-public class Drivetrain extends SubsystemBase {
+public class SparkmaxPID extends SubsystemBase {
 
      // declare PID Controllers
     private CANSparkMax leftMaster;
@@ -26,7 +26,7 @@ public class Drivetrain extends SubsystemBase {
     private double kPDrive, kIDrive, kIZoneDrive, kDDrive, kFFDrive, kForwardRR, kStrafeRR, kIsMoreStrafe;
 
     // public DifferentialDrive drive;
-    public Drivetrain() {
+    public SparkmaxPID() {
 
         leftMaster = new CANSparkMax(RobotMap.kLeftMaster, MotorType.kBrushless);
         LMEncoder = leftMaster.getEncoder();
@@ -35,6 +35,7 @@ public class Drivetrain extends SubsystemBase {
         //Define PID Values
 
         //assign PID Values for PID Controllers
+        leftMaster.restoreFactoryDefaults();
         leftMaster.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward,false);
         leftMaster.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse,false);
         leftMasterCanController.setIZone(kIZoneDrive);

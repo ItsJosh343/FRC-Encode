@@ -37,4 +37,8 @@ public class Climber extends SubsystemBase{
         liftMaster.set(speed);
     }
 
+    public void stop() {
+        liftMaster.set(0);
+    }
+
 }
