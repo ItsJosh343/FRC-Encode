@@ -57,7 +57,7 @@ public class RobotContainer {
     SmartDashboard.putNumber("Target Position",100.0);
     SmartDashboard.putNumber("Target Velocity",10.0);
     SmartDashboard.putNumber("Position Stop Tolerance",0.0);
-    SmartDashboard.putBoolean("Limits Enabled",true);
+    SmartDashboard.putBoolean("use kVelocity",true);
 
     //add options to the Autonomous Chooser
     // autoChooser.setDefaultOption("Move Forward Auto [Using Commands]", m_PIDRun);
@@ -92,7 +92,7 @@ public class RobotContainer {
     //Run Climb PID test code while button 1 on joystick is being held
     new JoystickButton(joystick1, 1).whileHeld(
       new StartEndCommand(
-        ()-> climber.runPID(SmartDashboard.getNumber("Target Velocity", 10.0) * joystick1.getY(),SmartDashboard.getNumber("P Value",0),SmartDashboard.getNumber("I Value",0),SmartDashboard.getNumber("D Value",0),SmartDashboard.getBoolean("Limits Enabled", true)),
+        ()-> climber.PIDSetVelocity(SmartDashboard.getNumber("Target Velocity", 10.0) * joystick1.getY(),SmartDashboard.getNumber("P Value",0),SmartDashboard.getNumber("I Value",0),SmartDashboard.getNumber("D Value",0),SmartDashboard.getBoolean("use kVelocity", true)),
         ()-> climber.stop(), climber
       )
     );
